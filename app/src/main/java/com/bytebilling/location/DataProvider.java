@@ -29,12 +29,6 @@ public class DataProvider implements DataProviderCallback {
 
     @Override
     public void accept(JSONObject param) {
-        if (param.has("timestamp")) {
-            broadcastIntent(mContext, mergeGPSJson(param).toString());
-            return;
-        }
-
-        mergeJson(param);
         for (DataProviderInterface provider : mDataProvider3Party) {
             try {
                 mergeJson(provider.getData());
@@ -42,6 +36,14 @@ public class DataProvider implements DataProviderCallback {
                 Log.e("DataProvider", e.toString());
             }
         }
+
+        if (param.has("timestamp")) {
+            broadcastIntent(mContext, mergeGPSJson(param).toString());
+            Log.d("DataProvider", mData.toString());
+            return;
+        }
+
+        mergeJson(param);
         Log.d("DataProvider", mData.toString());
     }
 
